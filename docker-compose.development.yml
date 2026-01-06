@@ -1,0 +1,142 @@
+# =============================================================================
+# Stirling PDF - Development Configuration
+# =============================================================================
+# Usage: docker compose -f docker-compose.development.yml up -d
+#
+# This configuration exposes services directly via ports (no Traefik required)
+# Access:
+#   - Stirling PDF: http://localhost:8080
+#   - API Docs: http://localhost:8080/swagger-ui/index.html
+# =============================================================================
+
+services:
+
+  # ---------------------------------------------------------------------------
+  # Stirling PDF Application
+  # ---------------------------------------------------------------------------
+  stirling-pdf:
+    # Option 1: Build custom image with branding (default)
+    build:
+      context: ./src
+      dockerfile: Dockerfile
+      args:
+        STIRLING_VERSION: ${STIRLING_VERSION:-latest-fat}
+        INCLUDE_BRANDING: "true"
+
+    # Option 2: Use pre-built custom image from GHCR
+    # image: ghcr.io/bauer-group/cs-pdf-toolbox/pdf-toolbox:latest
+
+    restart: unless-stopped
+    container_name: ${STACK_NAME:-pdf}_SERVER
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/api/v1/info/status"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    logging:
+      driver: json-file
+      options:
+        max-size: "50m"
+        max-file: "3"
+    environment:
+      - TZ=${TIME_ZONE:-Europe/Berlin}
+
+      # -- UI Branding (V2) --
+      # Note: In V2, appName and homeDescription are set via Admin UI, not env vars
+      - UI_APPNAMENAVBAR=${UI_APPNAMENAVBAR:-PDF Toolbox [BAUER GROUP]}
+      - UI_LOGOSTYLE=${UI_LOGOSTYLE:-modern}
+
+      # -- System Settings --
+      - SYSTEM_DEFAULTLOCALE=${SYSTEM_DEFAULT_LOCALE:-en-GB}
+      - SYSTEM_GOOGLEVISIBILITY=${SYSTEM_GOOGLE_VISIBILITY:-false}
+      - SYSTEM_SHOWUPDATE=${SYSTEM_SHOW_UPDATE:-false}
+      - SYSTEM_SHOWUPDATEONLYADMIN=${SYSTEM_SHOW_UPDATE_ONLY_ADMIN:-true}
+      - SYSTEM_MAXFILESIZE=${SYSTEM_MAX_FILE_SIZE:-2000}
+      - SYSTEM_ROOTURIPATH=${SYSTEM_ROOT_URI_PATH:-/}
+      - SYSTEM_CONNECTIONTIMEOUTMINUTES=${SYSTEM_CONNECTION_TIMEOUT_MINUTES:-5}
+
+      # -- Language --
+      - LANGS=${LANGS:-en_GB,de_DE,fr_FR,es_ES,it_IT,pt_BR,zh_CN,ja_JP,ko_KR,ar_AR,bg_BG,ca_CA,cs_CZ,da_DK,el_GR,eu_ES,fa_IR,fi_FI,ga_IE,hi_IN,hr_HR,hu_HU,id_ID,nl_NL,no_NB,pl_PL,pt_PT,ro_RO,ru_RU,sk_SK,sl_SI,sr_LATN_RS,sv_SE,th_TH,tr_TR,uk_UA,vi_VN,zh_TW}
+
+      # -- Security Settings --
+      - SECURITY_ENABLELOGIN=${SECURITY_ENABLE_LOGIN:-true}
+      - SECURITY_INITIALLOGIN_USERNAME=${SECURITY_INITIAL_LOGIN_USERNAME:-admin}
+      - SECURITY_INITIALLOGIN_PASSWORD=${SECURITY_INITIAL_LOGIN_PASSWORD:-}
+
+      # -- PDF Signing Certificate --
+      # Server certificate for organization-wide signing
+      # Note: SYSTEM_SERVERCERTIFICATE_ENABLED is auto-set by entrypoint when KEYSTORE_P12_BASE64 is provided
+      - SYSTEM_SERVERCERTIFICATE_ORGANIZATIONNAME=${SYSTEM_SERVERCERTIFICATE_ORGANIZATIONNAME:-BAUER GROUP}
+      - KEYSTORE_PASSWORD=${KEYSTORE_PASSWORD:-}
+      # Base64 encoded P12 (decoded by entrypoint to /configs/keystore.p12)
+      - KEYSTORE_P12_BASE64=${KEYSTORE_P12_BASE64:-}
+
+      # -- Legal Links --
+      - LEGAL_TERMSANDCONDITIONS=${LEGAL_TERMSANDCONDITIONS:-}
+      - LEGAL_PRIVACYPOLICY=${LEGAL_PRIVACYPOLICY:-}
+      - LEGAL_IMPRESSUM=${LEGAL_IMPRESSUM:-}
+      - LEGAL_ACCESSIBILITYSTATEMENT=${LEGAL_ACCESSIBILITYSTATEMENT:-}
+      - LEGAL_COOKIEPOLICY=${LEGAL_COOKIEPOLICY:-}
+
+      # -- SMTP (Optional) --
+      - MAIL_ENABLED=${MAIL_ENABLED:-false}
+      - MAIL_HOST=${MAIL_HOST:-}
+      - MAIL_PORT=${MAIL_PORT:-587}
+      - MAIL_USERNAME=${MAIL_USERNAME:-}
+      - MAIL_PASSWORD=${MAIL_PASSWORD:-}
+      - MAIL_FROM=${MAIL_FROM:-}
+
+    ports:
+      - "${EXPOSED_APP_PORT:-8080}:8080"
+    volumes:
+      # Configuration persistence
+      - 'stirling-configs:/configs'
+      # Custom files (branding, static assets)
+      - 'stirling-customFiles:/customFiles'
+      # Logs
+      - 'stirling-logs:/logs'
+      # Pipeline automation (optional)
+      - 'stirling-pipeline:/pipeline'
+
+      # -- PDF Signing Certificate (Alternative: Direct Mount) --
+      # Use this instead of KEYSTORE_P12_BASE64 for local development:
+      # - './certs/cert.p12:/configs/keystore.p12:ro'
+
+    networks:
+      local:
+
+
+# =============================================================================
+# Volumes
+# =============================================================================
+volumes:
+  # Stirling PDF configuration and database
+  stirling-configs:
+    driver: local
+    name: ${STACK_NAME:-pdf}-configs
+
+  # Custom files (logos, CSS, signatures)
+  stirling-customFiles:
+    driver: local
+    name: ${STACK_NAME:-pdf}-customFiles
+
+  # Application logs
+  stirling-logs:
+    driver: local
+    name: ${STACK_NAME:-pdf}-logs
+
+  # Pipeline automation
+  stirling-pipeline:
+    driver: local
+    name: ${STACK_NAME:-pdf}-pipeline
+
+
+# =============================================================================
+# Networks
+# =============================================================================
+networks:
+  # Internal network for service communication
+  local:
+    driver: bridge
+    name: ${STACK_NAME:-pdf}
