@@ -16,7 +16,7 @@ STACK_NAME=pdf_app_bauer-group_com
 STIRLING_VERSION=latest-fat
 
 # Timezone
-TIME_ZONE=Europe/Berlin
+TIME_ZONE=Etc/UTC
 ```
 
 ### Network

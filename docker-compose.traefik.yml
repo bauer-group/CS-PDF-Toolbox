@@ -40,7 +40,7 @@ services:
         max-size: "50m"
         max-file: "3"
     environment:
-      - TZ=${TIME_ZONE:-Europe/Berlin}
+      - TZ=${TIME_ZONE:-Etc/UTC}
 
       # -- UI Branding (V2) --
       # Note: In V2, appName and homeDescription are set via Admin UI or custom_settings.yml
