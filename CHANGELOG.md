@@ -1,3 +1,11 @@
+# [0.1.0](https://github.com/bauer-group/CS-PDF-Toolbox/compare/v0.0.1...v0.1.0) (2026-01-06)
+
+
+### Features
+
+* cleanup and ready for use ([1b92661](https://github.com/bauer-group/CS-PDF-Toolbox/commit/1b926619799ff7c7f4c11bc494ec4bbe791a076b))
+* füge Dependabot-Konfiguration und Docker-Wartungsworkflow hinzu ([ced674a](https://github.com/bauer-group/CS-PDF-Toolbox/commit/ced674af2bcd013f0d2329c04b5ce1d953cbdc26))
+
 ## [0.0.1](https://github.com/bauer-group/CS-PDF-Toolbox/compare/v0.0.0...v0.0.1) (2026-01-06)
 
 
