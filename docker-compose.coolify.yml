@@ -93,6 +93,10 @@ services:
       - MAIL_PASSWORD=${MAIL_PASSWORD:-}
       - MAIL_FROM=${MAIL_FROM:-}
 
+      # -- Performance Tuning --
+      # JVM memory settings for high-performance servers
+      - JAVA_TOOL_OPTIONS=${JAVA_TOOL_OPTIONS:--Xmx8g -Xms2g -XX:+UseG1GC -XX:MaxGCPauseMillis=200 -XX:ParallelGCThreads=8}
+
     expose:
       - 8080/tcp
     volumes:

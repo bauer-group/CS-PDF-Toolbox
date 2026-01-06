@@ -88,6 +88,10 @@ services:
       - MAIL_PASSWORD=${MAIL_PASSWORD:-}
       - MAIL_FROM=${MAIL_FROM:-}
 
+      # -- Performance Tuning --
+      # JVM memory settings for high-performance servers
+      - JAVA_TOOL_OPTIONS=${JAVA_TOOL_OPTIONS:--Xmx8g -Xms2g -XX:+UseG1GC -XX:MaxGCPauseMillis=200 -XX:ParallelGCThreads=8}
+
     expose:
       - 8080/tcp
     labels:
@@ -165,12 +169,6 @@ networks:
     driver: bridge
     name: ${STACK_NAME:-pdf}
     enable_ipv6: true
-    ipam:
-      config:
-      - subnet: 10.97.${PRIVATESUBNET:-254}.0/24
-        gateway: 10.97.${PRIVATESUBNET:-254}.1
-      - subnet: fdfd:10:97:${PRIVATESUBNET:-254}::/64
-        gateway: fdfd:10:97:${PRIVATESUBNET:-254}::1
 
   # External Traefik proxy network
   proxy:
