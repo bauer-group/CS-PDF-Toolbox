@@ -1,3 +1,11 @@
+## [0.1.1](https://github.com/bauer-group/CS-PDF-Toolbox/compare/v0.1.0...v0.1.1) (2026-01-06)
+
+
+### Bug Fixes
+
+* aktiviere Einladungen im Mail-Setup ([40f0602](https://github.com/bauer-group/CS-PDF-Toolbox/commit/40f0602e857379830e4782a8e01d125556421fae))
+* füge Wasserzeichen-Logo für Hintergrundvarianten hinzu ([23a7ba6](https://github.com/bauer-group/CS-PDF-Toolbox/commit/23a7ba6eaa4c549003ef368d0b0abc77e5821905))
+
 # [0.1.0](https://github.com/bauer-group/CS-PDF-Toolbox/compare/v0.0.1...v0.1.0) (2026-01-06)
 
 
