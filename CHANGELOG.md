@@ -1,3 +1,10 @@
+## [0.1.2](https://github.com/bauer-group/CS-PDF-Toolbox/compare/v0.1.1...v0.1.2) (2026-01-06)
+
+
+### Bug Fixes
+
+* invite via email was not working ([3785eba](https://github.com/bauer-group/CS-PDF-Toolbox/commit/3785ebab8ee04e700dbb212ee34354f085c3f317))
+
 ## [0.1.1](https://github.com/bauer-group/CS-PDF-Toolbox/compare/v0.1.0...v0.1.1) (2026-01-06)
 
 
