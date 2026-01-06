@@ -63,7 +63,7 @@ The licensing logic is implemented in the proprietary module:
 
 - `app/proprietary/src/main/java/stirling/software/proprietary/service/UserLicenseSettingsService.java` - User counting and grandfathering
 - `app/proprietary/src/main/java/stirling/software/proprietary/model/UserLicenseSettings.java` - License settings entity
-- `KeygenLicenseVerifier.java` - Remote license validation (added in [PR #1994](https://github.com/Stirling-Tools/Stirling-PDF/pull/1994))
+- `app/proprietary/src/main/java/stirling/software/proprietary/security/KeygenLicenseVerifier.java` - Remote license validation (added in [PR #1994](https://github.com/Stirling-Tools/Stirling-PDF/pull/1994))
 
 ## Options for More Than 5 Users
 
