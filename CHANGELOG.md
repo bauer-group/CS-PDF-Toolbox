@@ -1,3 +1,10 @@
+## [0.0.1](https://github.com/bauer-group/CS-PDF-Toolbox/compare/v0.0.0...v0.0.1) (2026-01-06)
+
+
+### Bug Fixes
+
+* korrigiere Versionsnummer in CHANGELOG und aktualisiere Branding-Konfiguration ([de5252f](https://github.com/bauer-group/CS-PDF-Toolbox/commit/de5252f57c0ec3b93b5b4e53c7d2f71793db4688))
+
 # 0.1.0 (2026-01-06)
 
 
