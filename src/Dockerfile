@@ -40,7 +40,7 @@ LABEL org.opencontainers.image.source="https://github.com/bauer-group/CS-PDF-Too
 LABEL org.opencontainers.image.url="https://github.com/bauer-group/CS-PDF-Toolbox"
 LABEL org.opencontainers.image.documentation="https://github.com/bauer-group/CS-PDF-Toolbox#readme"
 LABEL org.opencontainers.image.description="Stirling PDF - BAUER GROUP Edition with all OCR languages"
-LABEL org.opencontainers.image.version="1.0.0"
+LABEL org.opencontainers.image.version="0.0.1"
 
 # Extended Labels
 LABEL org.opencontainers.image.base.name="stirlingtools/stirling-pdf:${STIRLING_VERSION}"
