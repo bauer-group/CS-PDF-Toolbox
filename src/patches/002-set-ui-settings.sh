@@ -73,6 +73,9 @@ security:
   enableLogin: true
   csrfDisabled: false
 
+mail:
+  enableInvites: true
+
 EOF
 
 echo "  Created custom_settings.yml with:"
