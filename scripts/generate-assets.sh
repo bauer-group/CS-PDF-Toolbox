@@ -442,10 +442,44 @@ echo "  Created: maskable-icon-512x512.png (512x512)"
 #     ├── StirlingPDFLogoBlackText.svg    (light mode with text)
 #     ├── StirlingPDFLogoWhiteText.svg    (dark mode with text)
 #     ├── StirlingPDFLogoGreyText.svg     (grey text variant)
-#     ├── StirlingPDFLogoNoTextLight.svg  (icon only, light)
-#     ├── StirlingPDFLogoNoTextDark.svg   (icon only, dark)
+#     ├── StirlingPDFLogoNoTextLight.svg  (icon only, light - WATERMARK)
+#     ├── StirlingPDFLogoNoTextDark.svg   (icon only, dark - WATERMARK)
 #     ├── logo-tooltip.svg                (small tooltip icon)
 #     └── favicon.ico                     (style-specific favicon)
+#
+# The NoText variants are used as background watermarks on empty pages.
+# We generate a subtle, low-opacity version for this purpose.
+
+echo ""
+echo -e "${CYAN}========================================${NC}"
+echo -e "${CYAN} Generating V2 Watermark Logo${NC}"
+echo -e "${CYAN}========================================${NC}"
+echo ""
+
+# Generate watermark SVG (subtle, low-opacity version for background)
+# This is used by Stirling PDF V2 for the NoTextLight/NoTextDark variants
+if [[ -n "$SVG_SQUARE" ]]; then
+    echo "Generating watermark SVG from square logo..."
+
+    WATERMARK_FILE="$BRANDING_DIR/logo-watermark.svg"
+
+    # Extract the SVG content and wrap it with reduced opacity
+    # Remove XML declaration and wrap inner content in opacity group
+    {
+        echo '<?xml version="1.0" encoding="UTF-8"?>'
+        # Get the opening svg tag with attributes
+        grep -o '<svg[^>]*>' "$SVG_SQUARE" | head -1
+        echo '  <g opacity="0.05">'
+        # Get everything between <svg> and </svg>, excluding the tags themselves
+        sed -n '/<svg/,/<\/svg>/p' "$SVG_SQUARE" | sed '1d;$d'
+        echo '  </g>'
+        echo '</svg>'
+    } > "$WATERMARK_FILE"
+
+    echo -e "  ${GREEN}Created: logo-watermark.svg (5% opacity for background)${NC}"
+else
+    echo -e "${YELLOW}Warning: No square SVG found, cannot generate watermark${NC}"
+fi
 
 echo ""
 echo -e "${CYAN}========================================${NC}"
@@ -463,10 +497,12 @@ if [[ -n "$SVG_WIDE" ]] && [[ -n "$SVG_SQUARE" ]]; then
     echo "    → StirlingPDFLogoGreyText.svg"
     echo ""
     echo "  - Copy logo-source-square.svg as icon variants:"
-    echo "    → StirlingPDFLogoNoTextLight.svg"
-    echo "    → StirlingPDFLogoNoTextDark.svg"
     echo "    → logo-tooltip.svg"
     echo "    → favicon.svg"
+    echo ""
+    echo "  - Copy logo-watermark.svg as background watermark:"
+    echo "    → StirlingPDFLogoNoTextLight.svg (subtle 5% opacity)"
+    echo "    → StirlingPDFLogoNoTextDark.svg  (subtle 5% opacity)"
 else
     echo -e "${YELLOW}Warning: SVG files missing for V2 logo structure${NC}"
     echo ""

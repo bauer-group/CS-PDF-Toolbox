@@ -82,11 +82,23 @@ if [[ -f "$BRANDING_DIR/logo-source-wide.svg" ]]; then
 fi
 
 if [[ -f "$BRANDING_DIR/logo-source-square.svg" ]]; then
-    # Copy square logo as the icon variants
+    # Copy square logo for tooltip (full opacity)
+    cp "$BRANDING_DIR/logo-source-square.svg" "$CUSTOM_FILES_DIR/modern-logo/logo-tooltip.svg"
+    echo "  Copied square logo as tooltip icon"
+fi
+
+# Use watermark (low-opacity) version for background NoText variants
+# These are displayed as large background decorations on empty pages
+if [[ -f "$BRANDING_DIR/logo-watermark.svg" ]]; then
+    cp "$BRANDING_DIR/logo-watermark.svg" "$CUSTOM_FILES_DIR/modern-logo/StirlingPDFLogoNoTextLight.svg"
+    cp "$BRANDING_DIR/logo-watermark.svg" "$CUSTOM_FILES_DIR/modern-logo/StirlingPDFLogoNoTextDark.svg"
+    echo "  Copied watermark logo as NoText variants (subtle background)"
+elif [[ -f "$BRANDING_DIR/logo-source-square.svg" ]]; then
+    # Fallback: use square logo if watermark not generated
+    echo -e "${YELLOW}  Warning: logo-watermark.svg not found, using square logo${NC}"
+    echo -e "${YELLOW}  Run scripts/generate-assets.sh to create watermark${NC}"
     cp "$BRANDING_DIR/logo-source-square.svg" "$CUSTOM_FILES_DIR/modern-logo/StirlingPDFLogoNoTextLight.svg"
     cp "$BRANDING_DIR/logo-source-square.svg" "$CUSTOM_FILES_DIR/modern-logo/StirlingPDFLogoNoTextDark.svg"
-    cp "$BRANDING_DIR/logo-source-square.svg" "$CUSTOM_FILES_DIR/modern-logo/logo-tooltip.svg"
-    echo "  Copied square logo as icon variants"
 fi
 
 # Copy to classic-logo as well for compatibility
