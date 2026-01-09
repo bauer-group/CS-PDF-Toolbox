@@ -44,7 +44,8 @@ LABEL org.opencontainers.image.version="0.1.2"
 
 # Extended Labels
 LABEL org.opencontainers.image.base.name="stirlingtools/stirling-pdf:${STIRLING_VERSION}"
-LABEL com.bauer-group.stirling.version="${STIRLING_VERSION}"
+LABEL com.bauer-group.image.version="${STIRLING_VERSION}"
+LABEL com.bauer-group.image.build.type="custom"
 
 # =============================================================================
 # Install Tesseract OCR Language Packs
