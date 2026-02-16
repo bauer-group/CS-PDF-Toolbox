@@ -1,6 +1,7 @@
 # PDF Toolbox (Stirling PDF)
 
 > **[English Version](README.md)**
+> **Info:** Dieses Projekt ist archiviert und wird nicht mehr gepflegt. Wir sind auf BentoPDF als PDF-Editor-Engine gewechselt.
 
 Docker Compose Deployment für [Stirling PDF](https://stirlingpdf.com) mit Custom Branding, Traefik-Integration und Zertifikat-basierter PDF-Signierung.
 
